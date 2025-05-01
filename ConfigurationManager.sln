@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationUI", "ConfigurationUI\ConfigurationUI.csproj", "{EBC1B8E5-9AE8-40A3-A838-848EC18C7202}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationReader", "ConfigurationReader\ConfigurationReader.csproj", "{BBF63FFF-3434-4213-BDE4-4010173E8939}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{EBC1B8E5-9AE8-40A3-A838-848EC18C7202}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBC1B8E5-9AE8-40A3-A838-848EC18C7202}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBC1B8E5-9AE8-40A3-A838-848EC18C7202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBF63FFF-3434-4213-BDE4-4010173E8939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBF63FFF-3434-4213-BDE4-4010173E8939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBF63FFF-3434-4213-BDE4-4010173E8939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBF63FFF-3434-4213-BDE4-4010173E8939}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

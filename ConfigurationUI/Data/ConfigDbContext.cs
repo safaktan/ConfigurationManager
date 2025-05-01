@@ -1,4 +1,4 @@
-using Common.Models;
+using ConfigurationUI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConfigurationUI.Data
