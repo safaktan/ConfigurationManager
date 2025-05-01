@@ -1,13 +1,21 @@
+using ConfigurationUI.Configs;
 using ConfigurationUI.Data;
+using ConfigurationUI.Repositories;
+using ConfigurationUI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<ConfigDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -28,6 +36,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Configuration}/{action=Index}/{id?}");
 
 app.Run();

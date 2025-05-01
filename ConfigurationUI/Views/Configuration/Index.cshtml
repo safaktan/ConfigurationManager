@@ -1,0 +1,141 @@
+@using ConfigurationUI.ViewModels
+@model List<ConfigurationViewModel>
+
+<div class="container mt-4">
+    <h2>Configurations</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createModal">Yeni Ekle</button>
+
+    <form asp-action="Index" method="get" class="mb-3 d-flex gap-2">
+        <input type="text" name="applicationName" class="form-control w-auto" placeholder="Application Name ara..." value="@Context.Request.Query["applicationName"]" />
+        <button type="submit" class="btn btn-secondary">Ara</button>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>IsActive</th>
+                <th>ApplicationName</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Value</td>
+                <td>@item.IsActive</td>
+                <td>@item.ApplicationName</td>
+                <td>
+                    <form asp-action="Delete" method="post" style="display:inline;" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button class="btn btn-danger btn-sm">Sil</button>
+                    </form>
+                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal"
+                        data-id="@item.Id"
+                        data-name="@item.Name"
+                        data-type="@item.Type"
+                        data-value="@item.Value"
+                        data-isactive="@item.IsActive"
+                        data-appname="@item.ApplicationName">
+                        Güncelle
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="Create" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Yeni Konfigürasyon Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2">
+                    <label class="form-label">Name</label>
+                    <input name="Name" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Type</label>
+                    <input name="Type" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Value</label>
+                    <input name="Value" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Application Name</label>
+                    <input name="ApplicationName" class="form-control" required />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="Update" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Konfigürasyon Güncelle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="Id" id="update-id" />
+                <div class="mb-2">
+                    <label class="form-label">Name</label>
+                    <input name="Name" id="update-name" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Type</label>
+                    <input name="Type" id="update-type" class="form-control" required />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Value</label>
+                    <input name="Value" id="update-value" class="form-control" required />
+                </div>
+                <div class="mb-2 form-check">
+                    <input type="checkbox" name="IsActive" class="form-check-input" id="update-isactive" />
+                    <label class="form-check-label">Is Active</label>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Application Name</label>
+                    <input name="ApplicationName" id="update-appname" class="form-control" required />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-warning">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const updateModal = document.getElementById('updateModal');
+        updateModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+
+            document.getElementById('update-id').value = button.getAttribute('data-id');
+            document.getElementById('update-name').value = button.getAttribute('data-name');
+            document.getElementById('update-type').value = button.getAttribute('data-type');
+            document.getElementById('update-value').value = button.getAttribute('data-value');
+            document.getElementById('update-isactive').checked = button.getAttribute('data-isactive') === 'True';
+            document.getElementById('update-appname').value = button.getAttribute('data-appname');
+        });
+    </script>
+}
