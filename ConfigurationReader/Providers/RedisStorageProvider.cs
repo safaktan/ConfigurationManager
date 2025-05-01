@@ -13,18 +13,18 @@ namespace ConfigurationReader.Providers
             _redis = ConnectionMultiplexer.Connect(connectionString);
         }
 
-        public IEnumerable<ConfigurationParameter> GetConfigurations(string applicationName)
+        public Task<List<ConfigurationParameter>> GetConfigurationsAsync(string applicationName)
         {
             var db = _redis.GetDatabase();
             var hashEntries = db.HashGetAll(applicationName);
 
-            return hashEntries.Select(entry => new ConfigurationParameter
+            return Task.FromResult(hashEntries.Select(entry => new ConfigurationParameter
             {
                 Name = entry.Name,
                 Value = entry.Value,
                 IsActive = true,
                 ApplicationName = applicationName
-            });
+            }).ToList());
         }
     }
 

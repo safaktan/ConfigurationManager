@@ -14,10 +14,10 @@ namespace ConfigurationReader.Providers
             _database = client.GetDatabase("ConfigurationDB");
         }
 
-        public IEnumerable<ConfigurationParameter> GetConfigurations(string applicationName)
+        public Task<List<ConfigurationParameter>> GetConfigurationsAsync(string applicationName)
         {
             var collection = _database.GetCollection<ConfigurationParameter>("Configurations");
-            return collection.Find(c => c.ApplicationName == applicationName && c.IsActive).ToList();
+            return collection.Find(c => c.ApplicationName == applicationName && c.IsActive).ToListAsync();
         }
     }
 

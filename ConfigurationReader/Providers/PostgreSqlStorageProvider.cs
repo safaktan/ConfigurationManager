@@ -14,13 +14,13 @@ namespace ConfigurationReader.Providers
             _connectionString = connectionString;
         }
 
-        public IEnumerable<ConfigurationParameter> GetConfigurations(string applicationName)
+        public Task<List<ConfigurationParameter>> GetConfigurationsAsync(string applicationName)
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
                 var query = "SELECT * FROM ConfigurationParameters WHERE ApplicationName = @ApplicationName AND IsActive = 1";
-                return connection.Query<ConfigurationParameter>(query, new { ApplicationName = applicationName });
+                return Task.FromResult(connection.Query<ConfigurationParameter>(query, new { ApplicationName = applicationName }).ToList());
             }
         }
     }

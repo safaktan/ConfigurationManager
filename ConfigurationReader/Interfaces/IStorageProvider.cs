@@ -4,6 +4,6 @@ namespace ConfigurationReader.Interfaces
 {
     public interface IStorageProvider
     {
-        IEnumerable<ConfigurationParameter> GetConfigurations(string applicationName);
+        Task<List<ConfigurationParameter>> GetConfigurationsAsync(string applicationName);
     }
 }
