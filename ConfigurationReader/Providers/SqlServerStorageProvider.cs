@@ -1,9 +1,9 @@
-using ConfigurationReader.Interfaces;
-using ConfigurationReader.Models;
+using ConfigurationReaderLibrary.Interfaces;
+using ConfigurationReaderLibrary.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace ConfigurationReader.Providers
+namespace ConfigurationReaderLibrary.Providers
 {
     public class SqlServerStorageProvider : IStorageProvider
     {

@@ -1,4 +1,4 @@
-namespace ConfigurationReader.Models
+namespace ConfigurationReaderLibrary.Models
 {
     public class ConfigurationParameter
     {

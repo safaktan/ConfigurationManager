@@ -1,8 +1,8 @@
-using ConfigurationReader.Interfaces;
-using ConfigurationReader.Models;
+using ConfigurationReaderLibrary.Interfaces;
+using ConfigurationReaderLibrary.Models;
 using MongoDB.Driver;
 
-namespace ConfigurationReader.Providers
+namespace ConfigurationReaderLibrary.Providers
 {
     public class MongoDbStorageProvider : IStorageProvider
     {
@@ -20,6 +20,4 @@ namespace ConfigurationReader.Providers
             return collection.Find(c => c.ApplicationName == applicationName && c.IsActive).ToListAsync();
         }
     }
-
-
 }

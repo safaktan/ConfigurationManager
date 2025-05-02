@@ -1,8 +1,8 @@
-using ConfigurationReader.Interfaces;
-using ConfigurationReader.Models;
+using ConfigurationReaderLibrary.Interfaces;
+using ConfigurationReaderLibrary.Models;
 using StackExchange.Redis;
 
-namespace ConfigurationReader.Providers
+namespace ConfigurationReaderLibrary.Providers
 {
     public class RedisStorageProvider : IStorageProvider
     {

@@ -1,9 +1,9 @@
-using ConfigurationReader.Interfaces;
-using ConfigurationReader.Models;
+using ConfigurationReaderLibrary.Interfaces;
+using ConfigurationReaderLibrary.Models;
 using Dapper;
 using Npgsql;
 
-namespace ConfigurationReader.Providers
+namespace ConfigurationReaderLibrary.Providers
 {
     public class PostgreSqlStorageProvider : IStorageProvider
     {
@@ -16,11 +16,22 @@ namespace ConfigurationReader.Providers
 
         public Task<List<ConfigurationParameter>> GetConfigurationsAsync(string applicationName)
         {
-            using (var connection = new NpgsqlConnection(_connectionString))
+            var connection = new NpgsqlConnection(_connectionString);
+            try
             {
+                
                 connection.Open();
-                var query = "SELECT * FROM ConfigurationParameters WHERE ApplicationName = @ApplicationName AND IsActive = 1";
+                var query = "SELECT * FROM \"ConfigurationParameters\" WHERE \"ApplicationName\" = @ApplicationName AND \"IsActive\" = true";
                 return Task.FromResult(connection.Query<ConfigurationParameter>(query, new { ApplicationName = applicationName }).ToList());
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine($"Error retrieving configurations from PostgreSQL: {ex.Message}");
+                return default;
+            }
+            finally
+            {
+                connection?.Close(); 
             }
         }
     }

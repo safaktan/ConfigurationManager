@@ -1,6 +1,6 @@
-using ConfigurationReader.Models;
+using ConfigurationReaderLibrary.Models;
 
-namespace ConfigurationReader.Interfaces
+namespace ConfigurationReaderLibrary.Interfaces
 {
     public interface IStorageProvider
     {

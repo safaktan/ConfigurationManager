@@ -1,4 +1,4 @@
-namespace ConfigurationReader.Interfaces
+namespace ConfigurationReaderLibrary.Interfaces
 {
     public interface IConfigurationReader
     {

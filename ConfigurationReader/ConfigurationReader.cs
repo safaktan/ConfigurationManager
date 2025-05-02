@@ -1,15 +1,15 @@
-﻿using ConfigurationReader.Interfaces;
-using ConfigurationReader.Models;
-using ConfigurationReader.Providers;
+﻿using System.Globalization;
+using ConfigurationReaderLibrary.Interfaces;
+using ConfigurationReaderLibrary.Models;
+using ConfigurationReaderLibrary.Providers;
 
-namespace ConfigurationReader
+namespace ConfigurationReaderLibrary
 {
     public class ConfigurationReader : IConfigurationReader
     {
         private readonly IStorageProvider _storageProvider;
         private readonly string _applicationName;
         private readonly int _refreshIntervalInMs;
-        private readonly Timer _refreshTimer;
         private static Dictionary<string, ConfigurationParameter> _cache = new Dictionary<string, ConfigurationParameter>();
         private static readonly object _cacheLock = new object();
 
@@ -19,29 +19,46 @@ namespace ConfigurationReader
             _applicationName = applicationName;
             _storageProvider = StorageProviderFactory.CreateProvider(connectionString);
 
-            _refreshTimer = new Timer(async _ => await RefreshConfigurations(), null, 0, _refreshIntervalInMs);
+            _ = StartBackgroundRefresh();
 
         }
 
         public T GetValue<T>(string key)
         {
-             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(key))
+                Console.WriteLine("Configuration key cannot be null or empty.");
 
-            try
+            if (_cache.TryGetValue(key, out var configItem))
             {
-                if (_cache.TryGetValue(key, out var configItem))
+                try
                 {
-                    return (T)Convert.ChangeType(configItem.Value, typeof(T));
+                    object rawValue = configItem.Value;
+
+                    if (typeof(T) == typeof(bool))
+                    {
+                        if (rawValue.ToString() == "1") return (T)(object)true;
+                        if (rawValue.ToString() == "0") return (T)(object)false;
+                        return (T)(object)bool.Parse(rawValue.ToString());
+                    }
+                    else if (typeof(T) == typeof(double))
+                    {
+                        var stringValue = rawValue.ToString();
+                        if (stringValue.Contains(","))
+                        {
+                            stringValue = stringValue.Replace(",", ".");
+                        }
+                        return (T)(object)double.Parse(stringValue, CultureInfo.InvariantCulture);
+                    }
+
+                    return (T)Convert.ChangeType(rawValue, typeof(T));
                 }
-                Console.WriteLine($"Configuration key '{key}' not found in cache. Attempting to refresh configurations.");
-                throw new KeyNotFoundException($"Configuration key '{key}' not found.");
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error converting configuration value for key '{key}': {ex.Message}");
+                   return  default;
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error converting configuration value for key '{key}': {ex.Message}");
-                throw new InvalidOperationException($"Error converting configuration value for key '{key}' to type '{typeof(T)}'.", ex);
-            }
+            return default;
         }
 
         private async Task RefreshConfigurations()
@@ -64,5 +81,21 @@ namespace ConfigurationReader
             }
         }
 
+        private async Task StartBackgroundRefresh()
+        {
+            var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(_refreshIntervalInMs));
+
+            while (await timer.WaitForNextTickAsync())
+            {
+                try
+                {
+                    await RefreshConfigurations();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[PeriodicTimer ERROR] {ex.Message}");
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
-using ConfigurationReader.Interfaces;
+using ConfigurationReaderLibrary.Interfaces;
 
-namespace ConfigurationReader.Providers
+namespace ConfigurationReaderLibrary.Providers
 {
     public static class StorageProviderFactory
     {
