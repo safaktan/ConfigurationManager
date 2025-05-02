@@ -24,7 +24,7 @@ namespace ConfigurationReader.Providers
             }
             else
             {
-                throw new ArgumentException("Geçersiz provider adı.");
+                throw new ArgumentException("Invalid Provider connection string format.");
             }
         }
     }
