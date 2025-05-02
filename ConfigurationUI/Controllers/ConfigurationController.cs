@@ -25,11 +25,6 @@ namespace ConfigurationUI.Controllers
             return View(configurations);
         }
 
-        // public IActionResult Create()
-        // {
-        //     return View();
-        // }
-
         [HttpPost]
         public async Task<IActionResult> Create(ConfigurationViewModel configurationViewModel)
         {
@@ -38,19 +33,7 @@ namespace ConfigurationUI.Controllers
             
              await _configurationService.SaveConfigurationAsync(configurationViewModel);
             return RedirectToAction("Index");
-
-            // return View(configurationViewModel);
         }
-
-        // public async Task<IActionResult> Edit(int id)
-        // {
-        //     var configuration = await _configurationService.GetConfigurationByIdAsync(id);
-        //     if (configuration == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return View(configuration);
-        // }
 
         [HttpPost]
         public async Task<IActionResult> Update(ConfigurationViewModel configurationViewModel)
@@ -60,19 +43,7 @@ namespace ConfigurationUI.Controllers
 
             await _configurationService.UpdateConfigurationAsync(configurationViewModel);
             return RedirectToAction("Index");
-
-            // return View(configurationViewModel);
         }
-
-        // public async Task<IActionResult> Delete(int id)
-        // {
-        //     var configuration = await _configurationService.GetConfigurationByIdAsync(id);
-        //     if (configuration == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return View(configuration);
-        // }
 
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)

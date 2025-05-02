@@ -109,8 +109,9 @@
                     <input name="Value" id="update-value" class="form-control" required />
                 </div>
                 <div class="mb-2 form-check">
+                    <input type="hidden" name="IsActive" value="false" />
                     <input type="checkbox" name="IsActive" class="form-check-input" id="update-isactive" />
-                    <label class="form-check-label">Is Active</label>
+                    <label class="form-check-label" for="update-isactive">Is Active</label>
                 </div>
                 <div class="mb-2">
                     <label class="form-label">Application Name</label>
@@ -127,6 +128,7 @@
 @section Scripts {
     <script>
         const updateModal = document.getElementById('updateModal');
+        const updateForm = updateModal.querySelector('form');
         updateModal.addEventListener('show.bs.modal', function (event) {
             const button = event.relatedTarget;
 
@@ -136,6 +138,12 @@
             document.getElementById('update-value').value = button.getAttribute('data-value');
             document.getElementById('update-isactive').checked = button.getAttribute('data-isactive') === 'True';
             document.getElementById('update-appname').value = button.getAttribute('data-appname');
+        });
+
+        updateForm.addEventListener('submit', function () {
+            const checkbox = document.getElementById('update-isactive');
+            const hiddenInput = updateForm.querySelector('input[name="IsActive"]');
+            hiddenInput.value = checkbox.checked ? 'true' : 'false';
         });
     </script>
 }

@@ -19,54 +19,95 @@ namespace ConfigurationUI.Services
 
         public async Task<List<ConfigurationViewModel>> GetAllConfigurationsAsync()
         {
-            var result =  await _configurationRepository.GetAllConfigurationsAsync();
-            if (result == null)
+            try
             {
-                return new List<ConfigurationViewModel>();
+                var result = await _configurationRepository.GetAllConfigurationsAsync();
+                if (result == null)
+                {
+                    return new List<ConfigurationViewModel>();
+                }
+                var configurationViewModelList = _mapper.Map<List<ConfigurationViewModel>>(result);
+                return configurationViewModelList;
             }
-            var configurationViewModelList = _mapper.Map<List<ConfigurationViewModel>>(result);
-            return configurationViewModelList;
+            catch (System.Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving configurations.", ex);
+            }
         }
 
         public async Task SaveConfigurationAsync(ConfigurationViewModel configurationViewModel)
         {
-            var configurationParameter = _mapper.Map<ConfigurationParameter>(configurationViewModel);
-            configurationParameter.IsActive = true;
-            await _configurationRepository.SaveConfigurationAsync(configurationParameter);
+            try
+            {
+                var configurationParameter = _mapper.Map<ConfigurationParameter>(configurationViewModel);
+                configurationParameter.IsActive = true;
+                await _configurationRepository.SaveConfigurationAsync(configurationParameter);
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception("An error occurred while saving the configuration.", ex);
+            }
         }
 
         public async Task<List<ConfigurationViewModel>> GetConfigurationByApplicationNameAsync(string applicationName)
         {
-            var result = await _configurationRepository.GetConfigurationByApplicationNameAsync(applicationName);
-            if (result == null)
+            try
             {
-                return new List<ConfigurationViewModel>();
+                var result = await _configurationRepository.GetConfigurationByApplicationNameAsync(applicationName);
+                if (result == null)
+                {
+                    return new List<ConfigurationViewModel>();
+                }
+                var configurationViewModelList = _mapper.Map<List<ConfigurationViewModel>>(result);
+                return configurationViewModelList;
             }
-            var configurationViewModelList = _mapper.Map<List<ConfigurationViewModel>>(result);
-            return configurationViewModelList;
+            catch (System.Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving configurations by application name.", ex);
+            }
         }
 
         public async Task<ConfigurationViewModel> GetConfigurationByIdAsync(int id)
         {
-            var result = await _configurationRepository.GetConfigurationByIdAsync(id);
-            if (result == null)
+            try
             {
-                return null;
+                var result = await _configurationRepository.GetConfigurationByIdAsync(id);
+                if (result == null)
+                {
+                    return null;
+                }
+                var configurationViewModel = _mapper.Map<ConfigurationViewModel>(result);
+                return configurationViewModel;
             }
-            var configurationViewModel = _mapper.Map<ConfigurationViewModel>(result);
-            return configurationViewModel;
+            catch (System.Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving the configuration by ID.", ex);
+            }
         }
 
         public async Task DeleteConfigurationAsync(int id)
         {
-            await _configurationRepository.DeleteConfigurationAsync(id);
+            try
+            {
+                await _configurationRepository.DeleteConfigurationAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception("An error occurred while deleting the configuration.", ex);
+            }
         }
 
         public async Task UpdateConfigurationAsync(ConfigurationViewModel configurationViewModel)
         {
-            var configurationParameter = _mapper.Map<ConfigurationParameter>(configurationViewModel);
-            await _configurationRepository.UpdateConfigurationAsync(configurationParameter);
+            try
+            {
+                var configurationParameter = _mapper.Map<ConfigurationParameter>(configurationViewModel);
+                await _configurationRepository.UpdateConfigurationAsync(configurationParameter);
+            }
+            catch (System.Exception ex)
+            {
+                throw new Exception("An error occurred while updating the configuration.", ex);
+            }
         }
     }
-    
 }
