@@ -4,8 +4,6 @@
 Asp.NetCore mvc ile yazılmış bir configurasyonları listeleme/ekleme/güncelleme/silme işlemi yapılabilecek UI.
 ConfigurationReader kütüphanesini test edip kullanmak için bir ConsoleApp bulunmaktadır.
 
-ConsoleApp de bulunan connectionstring'i db dockerda olduğu için docker compose file içerisinde bulunan db servis adı ile değiştiriniz.
-
 Ayrıca burada postgreSql üzerinden örneklendirme yapıldı fakat ConfigurationReader kütüphanesinin SqlServer, MongoDb, Redis desteğide bulunmakdatır.
 
 Aşadağıdaki adımları takip ederek uygulamayı kurabilirsiniz.
